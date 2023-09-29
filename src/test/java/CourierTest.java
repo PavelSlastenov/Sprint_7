@@ -1,4 +1,6 @@
 import helpers.CourierGenerator;
+import io.qameta.allure.Step;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import models.Credentials;
 import org.junit.After;
@@ -16,7 +18,9 @@ public class CourierTest {
 
     private int courierId;
 
-    @After public void deleteCourier() {
+    @After
+    @DisplayName("Удаление курьера")
+    public void deleteCourier() {
         if (courierId > 0) {
             ValidatableResponse response = client.delete(courierId);
             check.deletedSuccessfully(response);
@@ -24,6 +28,7 @@ public class CourierTest {
     }
 
     @Test
+    @DisplayName("Создание и авторизация курьера")
     public void courier() {
         var courier = generator.random();
         ValidatableResponse creationResponse = client.create(courier);
@@ -36,16 +41,30 @@ public class CourierTest {
         assert courierId > 100;
     }
 
-    @Test public void creationFails() {
+    @Test
+    @DisplayName("Создание курьера - без обязательного поля password")
+     public void creationWithoutPasswordFieldFails() {
         var courier = generator.generic();
         courier.setPassword(null);
 
         ValidatableResponse loginResponse = client.create(courier);
-        String message = check.creationFailed(loginResponse);
+        String message = check.creationWithoutPasswordFieldFailed(loginResponse);
         assert !message.isBlank();
     }
 
-    @Test public void loginFails() {
+    @Test
+    @DisplayName("Повторное создание курьера - уже есть в БД")
+     public void reCreationFails() {
+        var courier = generator.generic();
+
+        ValidatableResponse loginResponse = client.create(courier);
+        String message = check.reCreationFailed(loginResponse);
+        assert !message.isBlank();
+    }
+
+    @Test
+    @DisplayName("Ошибка при авторизации")
+    public void loginFails() {
         ValidatableResponse loginResponse = client.login(Map.of("password", "null"));
         check.loginFailed(loginResponse);
     }

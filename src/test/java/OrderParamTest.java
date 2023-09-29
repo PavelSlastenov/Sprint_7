@@ -1,14 +1,10 @@
-import helpers.CourierGenerator;
 import helpers.OrderGenerator;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import models.Credentials;
-import models.Order;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import services.CourierAssertions;
-import services.CourierClient;
 import services.OrderAssertions;
 import services.OrderClient;
 
@@ -38,25 +34,17 @@ public class OrderParamTest {
     }
 
     @After
+    @DisplayName("Отмена заказа")
     public void cancelOrder() {
         ValidatableResponse response = client.cancel(orderId);
         check.canceledSuccessOrder(response);
     }
 
     @Test
+    @DisplayName("Создание заказа")
     public void order() {
         var order = generator.generic(color);
         ValidatableResponse creationResponse = client.create(order);
         orderId = check.createdSuccessOrder(creationResponse);
-
-//        Order orders = Order.from(order);
-//        ValidatableResponse loginResponse = client.login(creds);
-//        orderId = check.createdSuccessOrder(loginResponse);
-
-//        assert order > 100;
-    }
-
-    @Test public void checkEm() {
-        System.out.println(color);
     }
 }

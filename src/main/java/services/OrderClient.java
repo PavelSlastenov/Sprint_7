@@ -1,5 +1,6 @@
 package services;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import models.Order;
 
@@ -8,6 +9,7 @@ import java.util.List;
 public class OrderClient extends Client {
     protected final String ROOT = "/orders";
 
+    @Step("Создание заказа")
     public ValidatableResponse create(Order order) {
         return spec()
                 .body(order)
@@ -16,7 +18,8 @@ public class OrderClient extends Client {
                 .then().log().all();
     }
 
-    public ValidatableResponse getOrderList(Order order) {
+    @Step("Получение списка заказов")
+    public ValidatableResponse getOrderList(int order) {
         return spec()
                 .body(order)
                 .when()
@@ -24,6 +27,7 @@ public class OrderClient extends Client {
                 .then().log().all();
     }
 
+    @Step("Отмена заказа")
     public ValidatableResponse cancel(int orderId) {
         String json = String.format("{\"track\": "+ orderId +"}");
 
