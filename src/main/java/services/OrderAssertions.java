@@ -22,7 +22,6 @@ public class OrderAssertions {
     public void getOrdersList(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(HTTP_OK)
-//                .body("ok", is(true))
         ;
     }
 

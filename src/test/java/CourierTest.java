@@ -1,5 +1,4 @@
 import helpers.CourierGenerator;
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import models.Credentials;
@@ -17,15 +16,6 @@ public class CourierTest {
     private final CourierAssertions check = new CourierAssertions();
 
     private int courierId;
-
-    @After
-    @DisplayName("Удаление курьера")
-    public void deleteCourier() {
-        if (courierId > 0) {
-            ValidatableResponse response = client.delete(courierId);
-            check.deletedSuccessfully(response);
-        }
-    }
 
     @Test
     @DisplayName("Создание и авторизация курьера")
@@ -67,5 +57,15 @@ public class CourierTest {
     public void loginFails() {
         ValidatableResponse loginResponse = client.login(Map.of("password", "null"));
         check.loginFailed(loginResponse);
+    }
+
+    @After
+    @Test
+    @DisplayName("Удаление курьера")
+    public void deleteCourier() {
+        if (courierId > 0) {
+            ValidatableResponse response = client.delete(courierId);
+            check.deletedSuccessfully(response);
+        }
     }
 }

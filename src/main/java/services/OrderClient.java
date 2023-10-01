@@ -19,9 +19,8 @@ public class OrderClient extends Client {
     }
 
     @Step("Получение списка заказов")
-    public ValidatableResponse getOrderList(int order) {
+    public ValidatableResponse getOrderList() {
         return spec()
-                .body(order)
                 .when()
                 .get(ROOT)
                 .then().log().all();
