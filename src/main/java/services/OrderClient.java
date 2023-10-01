@@ -4,8 +4,6 @@ import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import models.Order;
 
-import java.util.List;
-
 public class OrderClient extends Client {
     protected final String ROOT = "/orders";
 
