@@ -3,6 +3,7 @@ import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import models.Credentials;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import services.CourierAssertions;
 import services.CourierClient;
@@ -28,7 +29,7 @@ public class CourierTest {
         ValidatableResponse loginResponse = client.login(creds);
         courierId = check.loggedInSuccessfully(loginResponse);
 
-        assert courierId > 100;
+        Assert.assertTrue(courierId > 0);
     }
 
     @Test
@@ -39,17 +40,19 @@ public class CourierTest {
 
         ValidatableResponse loginResponse = client.create(courier);
         String message = check.creationWithoutPasswordFieldFailed(loginResponse);
-        assert !message.isBlank();
+        Assert.assertTrue(!message.isBlank());
     }
 
     @Test
     @DisplayName("Повторное создание курьера - уже есть в БД")
      public void reCreationFails() {
-        var courier = generator.generic();
+        var courier = generator.random();
 
         ValidatableResponse loginResponse = client.create(courier);
-        String message = check.reCreationFailed(loginResponse);
-        assert !message.isBlank();
+        check.createdSuccessfully(loginResponse);
+
+        ValidatableResponse reLoginResponse = client.create(courier);
+        check.reCreationFailed(reLoginResponse);
     }
 
     @Test

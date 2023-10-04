@@ -1,5 +1,8 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public class Credentials {
     private String login;
     private String password;
@@ -15,22 +18,4 @@ public class Credentials {
     public static Credentials from(Courier courier) {
         return new Credentials(courier.getLogin(), courier.getPassword());
     }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
 }

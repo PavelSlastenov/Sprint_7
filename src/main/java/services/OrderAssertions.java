@@ -12,8 +12,7 @@ public class OrderAssertions {
     public int createdSuccessOrder(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(HTTP_CREATED)
-                .body(not(empty()))
-        ;
+                .body(not(empty()));
         int trackId = response.extract().path("track");
         return trackId;
     }
@@ -21,15 +20,13 @@ public class OrderAssertions {
     @Step("Проверка значений ответа - код 200")
     public void getOrdersList(ValidatableResponse response) {
         response.assertThat()
-                .statusCode(HTTP_OK)
-        ;
+                .statusCode(HTTP_OK);
     }
 
     @Step("Проверка значений ответа - код 200")
     public void canceledSuccessOrder(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(HTTP_OK)
-                .body("ok", is(true))
-                ;
+                .body("ok", is(true));
     }
 }

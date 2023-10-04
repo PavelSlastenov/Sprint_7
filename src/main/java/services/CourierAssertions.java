@@ -11,8 +11,7 @@ public class CourierAssertions {
     public void createdSuccessfully(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(HTTP_CREATED)
-                .body("ok", is(true))
-        ;
+                .body("ok", is(true));
 
     }
 
@@ -22,8 +21,7 @@ public class CourierAssertions {
                 .statusCode(HTTP_OK)
                 .body("id", greaterThan(0))
                 .extract()
-                .path("id")
-        ;
+                .path("id");
 
     }
 
@@ -33,18 +31,16 @@ public class CourierAssertions {
                 .statusCode(HTTP_BAD_REQUEST)
                 .body("message", notNullValue())
                 .extract()
-                .path("message")
-        ;
+                .path("message");
     }
 
     @Step("Проверка значений ответа - код 409")
     public String reCreationFailed(ValidatableResponse response) {
         return response.assertThat()
                 .statusCode(HTTP_CONFLICT)
-                .body("message", notNullValue())
+                .body("message", equalTo("Этот логин уже используется. Попробуйте другой."))
                 .extract()
-                .path("message")
-                ;
+                .path("message");
     }
 
     @Step("Проверка значений ответа - код 400")
@@ -58,7 +54,6 @@ public class CourierAssertions {
     public void deletedSuccessfully(ValidatableResponse response) {
         response.assertThat()
                 .statusCode(HTTP_OK)
-                .body("ok", is(true))
-                ;
+                .body("ok", is(true));
     }
 }
